@@ -33,30 +33,15 @@ server {
     if ($http_cookie ~ "users_login_cookie") {
       set $no_cache 1;
     }
-
-    location ~ [^/]\.php(/|$) {
+    location ~ \.(hh|php)$ {
         try_files $uri =404;
 
-        # These options are for nginx caching.
-        # All cached files are stored in /etc/nginx/cache.
-        # Uncomment if caching with Nginx is your jam!
-        #fastcgi_cache phpcache;
-        #fastcgi_cache_methods GET HEAD;
-        #add_header X-Fastcgi-Cache $upstream_cache_status;
-        #fastcgi_cache_bypass $no_cache;
-        #fastcgi_no_cache $no_cache;
-        #fastcgi_cache_valid 200 302 60m;
-        #fastcgi_cache_valid  404 5m;
-        #proxy_read_timeout 300;
-
-        # These are typical nginx settings.
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        fastcgi_index index.php;
-        include fcgi.conf;
-        fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_read_timeout 300;
-        fastcgi_ignore_headers X-Accel-Expires Expires Cache-Control;
+        fastcgi_keep_conn on;
+        fastcgi_pass   unix:/var/run/hhvm/hhvm.sock;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include        fcgi.conf;
+        fastcgi_read_timeout    300;
     }
 
     # Location Functions
@@ -77,7 +62,7 @@ server {
     # include wordpress.conf;
     # include restrictions.conf;
     # We only enable this option if either W3TC is in effect on a WordPress install
-    # Or you manage an override from your application root. 
+    # Or you manage an override from your application root.
 	# An example would be that of Admin Tools for Joomla!
     # include /srv/www/sitename/public/nginx.conf;
 
