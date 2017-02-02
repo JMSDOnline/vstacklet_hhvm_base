@@ -8,7 +8,7 @@ server {
     access_log /srv/www/sitename/logs/sitename_access.log;
     error_log /srv/www/sitename/logs/sitename_error.log;
 
-    # include vstacklet/directive-only/ssl.conf;
+    # include server.configs/directives/ssl.conf;
     # ssl_certificate /srv/www/sitename/ssl/sitename.crt;
     # ssl_certificate_key /srv/www/sitename/ssl/sitename.key;
     root /srv/www/sitename/public;
